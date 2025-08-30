@@ -1,15 +1,15 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'vasanth1602'
-        APP_NAME = 'blue-green-app'
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_REPO = 'vasanth1602/blue-green-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
     stages {
         stage('Build') {
             steps {
                 dir('app') {
-                    bat 'docker build -t %DOCKER_REGISTRY%/%APP_NAME%:%IMAGE_TAG% .'
+                    bat 'docker build -t %DOCKER_REPO%:%IMAGE_TAG% .'
                 }
             }
         }
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     bat 'echo %DOCKER_PASS% | docker login %DOCKER_REGISTRY% -u %DOCKER_USER% --password-stdin'
-                    bat 'docker push %DOCKER_REGISTRY%/%APP_NAME%:%IMAGE_TAG%'
+                    bat 'docker push %DOCKER_REPO%:%IMAGE_TAG%'
                 }
             }
         }
