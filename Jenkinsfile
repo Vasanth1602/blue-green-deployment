@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_REGISTRY = 'docker.io/vasanth1602'
+        DOCKER_REGISTRY = 'vasanth1602'
         APP_NAME = 'blue-green-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
